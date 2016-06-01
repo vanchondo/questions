@@ -1,6 +1,8 @@
 package com.nearsoft.questions.config;
 
 import com.nearsoft.questions.service.ElasticSearchReindexerService;
+import com.ullink.slack.simpleslackapi.SlackSession;
+import com.ullink.slack.simpleslackapi.impl.SlackSessionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -38,6 +40,12 @@ public class QuestionsApplication extends SpringBootServletInitializer {
     public void initApplication() throws IOException {
         ElasticSearchReindexerService elasticsearchReindexerService = applicationContext.getBean(ElasticSearchReindexerService.class);
         elasticsearchReindexerService.reindex();
+
+        SlackSession session = SlackSessionFactory.createWebSocketSlackSession("xoxb-47191036721-9FfTeE1DZcYQKEWfpJH0xbOU");
+        session.connect();
+
+        session.addMessagePostedListener((event, session1) -> System.out.println(event.getMessageContent()));
+
     }
 
 }
